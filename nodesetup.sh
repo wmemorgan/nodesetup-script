@@ -11,11 +11,9 @@ echo "Will you be deploying API to Netlify? (y/N):"
 read installnetlify
 
 if [ "$installexpress" = 'y' ]; then
-  echo
   echo "Installing Express, Helmet, and Cors modules"
   yarn add express helmet cors && yarn add nodemon --dev
 else
-  echo
   echo "Would you prefer to install Koa instead? (y/N):"
   read installkoa
   yarn add koa koa-helmet @koa/cors@2 && yarn add nodemon --dev
@@ -33,18 +31,16 @@ if [ "$installknex" = 'y' ]; then
   echo "Installing knex and database connector $databasetype"
   yarn add knex $databasetype &&
   mkdir data && touch data/dbConfig.js &&
-  mkdir data/models && touch data/models/index.js
+  mkdir data/models && touch data/models/index.js &&
+  yarn knex init
 fi
 
 if [ "$installnetlify" = 'y' ]; then
-  echo
   echo "Installing Netlify Lambda tools"
   yarn add serverless-http && yarn add netlify-lambda --dev &&
   touch netlify.toml
-  echo
 else
   echo
   touch index.js
   echo "Node project setup complete"
-  echo
 fi
