@@ -11,6 +11,8 @@ echo "Do you want to use environment variables? (y/N):"
 read installenv
 echo "Will you be deploying API to Netlify? (y/N):"
 read installnetlify
+echo "Will the you need authentication services? (y/N):"
+read installauth
 
 if [ "$installexpress" = 'y' ]; then
   echo "Installing Express, Helmet, and Cors modules"
@@ -30,9 +32,10 @@ if [ "$installknex" = 'y' ]; then
   echo "Which database will you use (sqlite3/pg/both): "
   read databasetype
 
-  if [ "$databasetype" = 'both']; then
+  if [ "$databasetype" = 'both' ]; then
     echo "Installing knex and database connector $databasetype"
     yarn add knex sqlite3 pg
+    yarn add knex-cleaner --dev
   else
     yarn add knex $databasetype
   fi
@@ -46,6 +49,24 @@ fi
 if [ "$installenv" = 'y' ]; then
   echo "Setting up project to use environment variables"
   yarn add dotenv && touch .env
+fi
+
+if [ "$installauth" = 'y' ]; then
+  echo "Will you need user session management? (y/N):"
+  read installsessionmgmt
+  echo "Installing authentication related modules"
+  yarn add bcryptjs jsonwebtoken
+
+  if [ "$installsessionmgmt" = 'y' ] && [ "$installexpress" = 'y' ]; then
+    echo "Install express-session"
+    yarn add express-session
+  fi
+
+  if [ "$installsessionmgmt" = 'y' ] && [ "$installknex" = 'y' ]; then
+    echo "Install connect-session-knex"
+    yarn add connect-session-knex
+  fi
+
 fi
 
 if [ "$installnetlify" = 'y' ]; then
