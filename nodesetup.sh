@@ -13,6 +13,8 @@ echo "Will you be deploying API to Netlify? (y/N):"
 read installnetlify
 echo "Will the you need authentication services? (y/N):"
 read installauth
+echo "Will you need testing tools? (y/N):"
+read installtest
 
 if [ "$installexpress" = 'y' ]; then
   echo "Installing Express, Helmet, and Cors modules"
@@ -20,7 +22,10 @@ if [ "$installexpress" = 'y' ]; then
 else
   echo "Would you prefer to install Koa instead? (y/N):"
   read installkoa
-  yarn add koa koa-helmet @koa/cors@2 && yarn add nodemon --dev
+  if [ "$installkoa" = 'y' ]; then
+    echo "Installing Koa"
+    yarn add koa koa-helmet @koa/cors@2 && yarn add nodemon --dev
+  fi
 fi
 
 if [ "$installmorgan" = 'y' ]; then
@@ -76,5 +81,11 @@ if [ "$installnetlify" = 'y' ]; then
 else
   echo
   touch index.js
-  echo "Node project setup complete"
 fi
+
+if [ "$installtest" = 'y' ]; then
+  echo "Installing Jest"
+  yarn add jest --dev
+fi
+
+echo "Node project setup complete"
