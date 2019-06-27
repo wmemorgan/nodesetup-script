@@ -85,7 +85,7 @@ fi
 
 if [ "$installtest" = 'y' ]; then
   echo "Installing Jest"
-  yarn add jest --dev
+  yarn add jest supertest --dev
 fi
 
 echo "Node project setup complete"
